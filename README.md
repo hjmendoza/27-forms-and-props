@@ -1,7 +1,7 @@
 ![cf](http://i.imgur.com/7v5ASc8.png) 27: Forms and Props - Haley Mendoza
 ===
 
-#### Features 
+### Features 
 ###### App Component
 * Contains all of the **application state** 
 * Contains methods for modifying the application state
