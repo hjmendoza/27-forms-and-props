@@ -4,7 +4,7 @@ class SearchForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.props.handleSubmit}>
+      <form className={this.props.error ? 'error' : '' } onSubmit={this.props.handleSubmit}>
         <label>
           Subreddit Name <br />
           <input onChange={this.props.handleChange} type="text" name="subreddit"/>

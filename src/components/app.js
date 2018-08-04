@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react';
 
 
-import SearchForm from './redditSearch/form.js';
-import SearchResultList from './redditSearch/resultList.js';
+import SearchForm from './reddit/searchForm.js';
+import SearchResultList from './reddit/searchResultList.js';
+
+import './styles/app.scss';
 
 import superagent from 'superagent';
 
@@ -27,17 +29,19 @@ export default class App extends Component {
 
   handleChange(e){
     e.preventDefault();
-    
-
+    this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleSubmit(e){
+  async handleSubmit(e){
     e.preventDefault();
     this.isLoading(true);
-    return superagent.get(`https://www.reddit.com/r/${this.state.subreddit}.json?limit=${this.state.number}`)
-    .then(result => {
+    await superagent.get(`https://www.reddit.com/r/${this.state.subreddit}.json?limit=${this.state.number}`)
+    .then(results => {
+      this.setState({
+        error: false,
+        results: results.body.data.children,
+      });
       this.isLoading(false);
-      return result.body;
     })
     .catch(err =>  {
       console.log(err);
@@ -50,8 +54,8 @@ export default class App extends Component {
     return (
       <Fragment>
         <h1>Subreddit Search</h1>
-        <SearchForm />
-        <SearchResultList />
+        <SearchForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} error={this.state.error} />
+        <SearchResultList results={this.state.results} />
       </Fragment>
     );
 
